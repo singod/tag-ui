@@ -1,4 +1,4 @@
-import Panel from './Panel'
+import Panel from './Panel/index'
 
 import Button from './Button'
 import ButtonGroup from './ButtonGroup'
@@ -6,8 +6,10 @@ import ButtonGroup from './ButtonGroup'
 import Table from './Table'
 import TableColumn from './TableColumn'
 
-import Pagination from './Pagination'
 import DetailView from './DetailView'
+import DetailViewItem from './DetailViewItem'
+
+import Pagination from './Pagination'
 import Tree from './Tree'
 import Autoflow from './Autoflow'
 
@@ -27,7 +29,6 @@ import MenuItem from './MenuItem'
 
 import Editable from './Editable'
 
-
 const components = {
   Panel,
 
@@ -40,8 +41,10 @@ const components = {
   Table,
   TableColumn,
 
-  Pagination,
   DetailView,
+  DetailViewItem,
+  
+  Pagination,
   Tree,
   Autoflow,
 
@@ -58,8 +61,5 @@ const components = {
 
   Editable,
 }
-
-
-
 
 export default components

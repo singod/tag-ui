@@ -1,7 +1,8 @@
+// 引入样式
+import './libs/bootstrap'
+
 import Vue from 'vue'
 import router from './router'
-
-import './bootstrap'
 
 // import TagUI from '../dist'
 import TagUI from '../src'

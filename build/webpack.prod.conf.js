@@ -12,7 +12,7 @@ var env = config.build.env
 
 var webpackConfig = merge(baseWebpackConfig, {
   mode: 'production',
-  // devtool: config.build.productionSourceMap ? '#source-map' : false,
+  devtool: config.build.productionSourceMap ? '#source-map' : false,
   output: {
     path: config.build.assetsRoot,
     // filename: utils.assetsPath('js/[name].js'),
@@ -39,11 +39,11 @@ var webpackConfig = merge(baseWebpackConfig, {
       commonjs2: 'accounting',
       amd: 'accounting',
     },
-    'tag-formatter': {
-      commonjs2: 'tag-formatter'
+    'tg-formatter': {
+      commonjs2: 'tg-formatter'
     },
-    'tag-validators': {
-      commonjs2: 'tag-validators'
+    'tg-validators': {
+      commonjs2: 'tg-validators'
     },
   },
   plugins: [

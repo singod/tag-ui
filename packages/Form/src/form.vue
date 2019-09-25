@@ -4,11 +4,11 @@
   </form>
 </template>
 <script>
-import { Validator } from 'tag-validators'
+import { Validator } from 'tg-validators'
 
 export default {
   name: 'TagForm',
-  data() {
+  data () {
     return {
       errors: null,
     };
@@ -34,17 +34,15 @@ export default {
     },
   },
   computed: {
-    classBuilder() {
+    classBuilder () {
       var classes = [];
 
       return classes;
     },
   },
-  created() {
-
-  },
+  created () { },
   methods: {
-    validate() {
+    validate () {
       return Validator.validate(this.form, this.rules, this.labels).catch(errors => this.errors = errors)
     }
   }

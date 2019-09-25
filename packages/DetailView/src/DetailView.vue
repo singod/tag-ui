@@ -1,31 +1,38 @@
 <script>
-import DetailView from './DetailView'
+import Attribute from './Attribute'
+import { Validator } from 'tg-validators'
+
 export default {
     name: 'TagDetailView',
     data() {
         return {
-            DetailView: null,
+            attributes: [],
+            mode: 'view',
+            errors: {},
         }
     },
     props: {
-        options: {
-            type: Object,
-            default: {},
+        form: Object,
+        rules: {
+            type: Array,
+            default: () => [],
         },
+        labels: {
+            type: Object,
+            default: () => ({}),
+        },
+
+        title: String,
+        readonly: Boolean,
+        type: String,
     },
-    computed: {
-        model() { return this.options.model },
-        attributes() { return this.DetailView.attributes },
-        title() { return this.options.title },
-    },
-    created() {
-        this.DetailView = new DetailView(this.options);
-    },
+    computed: {},
+    created() { },
     render(h) {
-        return <tag-panel title={this.title} minable={false}>
+        return <tag-panel class="detail-view" title={this.title} minable={false} type={this.type}>
             <template slot="tools">
                 {
-                    this.DetailView.mode === 'view' ?
+                    this.mode === 'view' ?
                         <button type="button" class="btn btn-link btn-xs" aria-label="Left Align" onClick={this.toggleMode}>
                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </button>
@@ -34,13 +41,13 @@ export default {
                             <button type="button" class="btn btn-link btn-xs" aria-label="Left Align" onClick={this.toggleMode}>
                                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                             </button>,
-                            <button type="button" class="btn btn-link btn-xs" aria-label="Left Align" onClick={this.toggleMode}>
+                            <button type="button" class="btn btn-link btn-xs" aria-label="Left Align" onClick={this.handleOk}>
                                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                             </button>
                         ]
                 }
             </template>
-            <table class="detail-view table table-bordered">
+            <table class="table table-bordered">
                 <colgroup>
                     <col width="20%" />
                     <col />
@@ -48,20 +55,47 @@ export default {
                 <tbody>
                     {
                         this._l(this.attributes, (attribute) => {
-                            return attribute.render(h, this.DetailView.mode, this.model);
+                            return attribute.render(h, this.mode, this.form, this.labels, this.errors);
                         })
                     }
                 </tbody>
             </table>
+            {
+                this.$slots.default
+            }
         </tag-panel>
     },
     methods: {
         toggleMode() {
-            if (this.DetailView.mode === 'edit')
-                this.DetailView.mode = 'view'
+            if (this.mode === 'edit')
+                this.mode = 'view'
             else
-                this.DetailView.mode = 'edit'
-        }
+                this.mode = 'edit'
+        },
+        addAttribute(attribute, label, slots) {
+            this.attributes.push(new Attribute({ attribute, label, slots }))
+        },
+        handleOk() {
+            if (this.rules.length) {
+                Validator.validate(this.form, this.rules, this.labels)
+                    .then(() => {
+                        this.$emit('submit')
+                    })
+                    .catch(err => this.errors = err);
+            } else {
+                this.$emit('submit')
+            }
+        },
     }
 }
 </script>
+<style lang="scss">
+.detail-view {
+  .table {
+    margin-bottom: 0;
+  }
+  .attribute-error {
+    padding-top: 1em;
+  }
+}
+</style>
